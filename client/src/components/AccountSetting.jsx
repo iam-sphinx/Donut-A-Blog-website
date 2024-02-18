@@ -63,7 +63,7 @@ const AccountSetting = () => {
   const uploadProfileData = async () => {
     try {
       axios
-        .put("http://localhost:8080/api/v1/user/profile/update", formData, {
+        .put("https://donut-backend-2vcf.onrender.com/api/v1/user/profile/update", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },

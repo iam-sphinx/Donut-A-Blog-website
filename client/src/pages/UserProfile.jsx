@@ -16,9 +16,12 @@ const UserProfile = () => {
     const fetchProfile = async () => {
       try {
         await axios
-          .get(`http://localhost:8080/api/v1/user/profile/${id}`, {
-            withCredentials: true,
-          })
+          .get(
+            `https://donut-backend-2vcf.onrender.com/api/v1/user/profile/${id}`,
+            {
+              withCredentials: true,
+            }
+          )
           .then((response) => {
             if (response.status === 200) {
               setProfile(response.data.data);

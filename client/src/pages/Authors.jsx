@@ -10,7 +10,7 @@ const Authors = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/api/v1/author/"
+          "https://donut-backend-2vcf.onrender.com/api/v1/author/"
         );
         if (response.status === 200) {
           setAuthors(response.data.data);

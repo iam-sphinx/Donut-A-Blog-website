@@ -7,7 +7,7 @@ const FollowBtn = ({ authorId }) => {
   const handleFollow = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/v1/author/follow/${authorId}`,
+        `https://donut-backend-2vcf.onrender.com/api/v1/author/follow/${authorId}`,
         { withCredentials: true }
       );
       if (response.status === 200) {

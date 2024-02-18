@@ -9,7 +9,7 @@ const Posts = () => {
     const fetchData = async () => {
       try {
         await axios
-          .get("http://localhost:8080/api/v1/blogs/")
+          .get("https://donut-backend-2vcf.onrender.com/api/v1/blogs/")
           .then((response) => {
             if (response.status === 200) {
               setPosts(response.data.data);
