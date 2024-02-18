@@ -33,7 +33,7 @@ const AuthorCard = ({ title, quote, imgUrl, bgUrl, followers, posts, id }) => {
       <div className="flex-[0.3] ">
         <img src={bgUrl} alt="" className="w-full h-full object-cover" />
       </div>
-      <Link to={`/profile/${id}`}>
+      <Link to={`/author/${id}`}>
         <div className="absolute left-[60%] top-[50%] translate-y-[-50%] isolate aspect-video w-32 h-32 rounded-full bg-white/20 shadow-lg ring-1 ring-black/5">
           <div className="w-full h-full flex items-center justify-center">
             <div className="w-28 h-28 rounded-full overflow-hidden">

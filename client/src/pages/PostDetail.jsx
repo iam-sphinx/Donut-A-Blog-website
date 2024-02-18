@@ -45,7 +45,7 @@ const PostDetail = () => {
             <div className="flex-1"></div>
             <h1 className="font-bold text-5xl font-poor-story">{post.title}</h1>
             <div className="flex-1 flex items-center justify-end gap-5">
-              {user._id == post.authorId ? (
+              {user?._id == post.authorId ? (
                 <>
                   <button className="px-3 py-2  flex items-center gap-2 rounded-md text-white bg-green-300 hover:scale-105 shadow-lg hover:text-[#4e4e4e] transition ease-in-out duration-150">
                     <FaPen />
