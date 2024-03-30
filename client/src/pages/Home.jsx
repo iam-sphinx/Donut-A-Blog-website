@@ -3,7 +3,7 @@ import Posts from "../components/Posts";
 
 const Home = () => {
   return (
-    <div className="flex-1">
+    <div className="flex-1 min-h-screen">
       <Posts />
     </div>
   );

@@ -1,8 +1,27 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const AuthorCard = ({ title, quote, imgUrl, bgUrl, followers, posts, id }) => {
   quote = quote?.length >= 150 ? quote?.slice(0, 150) + "..." : quote;
+  const [isFollowed, setIsFollowed] = useState(false);
+  
+  const handleFollow = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/api/v1/author/follow/${id}`,
+        { withCredentials: true }
+      );
+      if (response.status === 200) {
+        setIsFollowed(true);
+      } else {
+        setIsFollowed(false);
+      }
+    } catch (error) {
+      setIsFollowed(false);
+    }
+  };
+
   return (
     <div className="h-[300px] w-[500px] shadow-lg  rounded-3xl overflow-hidden flex relative isolate aspect-video bg-white/20 ring-1 ring-black/5">
       <div className="flex-[0.7] bg-[#FDF0D1] isolate  ">
@@ -24,7 +43,10 @@ const AuthorCard = ({ title, quote, imgUrl, bgUrl, followers, posts, id }) => {
               </span>
             </div>
 
-            <button className="px-8 py-2 bg-blue-500 rounded-3xl mt-4 text-lg font-Dosis hover:shadow-lg hover:text-white">
+            <button
+              className="px-8 py-2 bg-blue-500 rounded-3xl mt-4 text-lg font-Dosis hover:shadow-lg hover:text-white"
+              onClick={handleFollow}
+            >
               Follow
             </button>
           </div>

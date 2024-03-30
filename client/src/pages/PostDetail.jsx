@@ -5,11 +5,18 @@ import { useLocation, useNavigate } from "react-router-dom";
 import PostAuthor from "../components/PostAuthor";
 import axios from "axios";
 import PostsNotFound from "./PostsNotFound";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { failureState, loadingState, successState } from "../slices/userSlice";
+import LoadingScreen from "../components/LoadingScreen";
+import parse from 'html-react-parser';
 
 const PostDetail = () => {
   const user = useSelector((state) => state.user.user);
   const [post, setPost] = useState();
+  const loading = useSelector((state) => state.user.loading);
+  const failure = useSelector((state) => state.user.failure);
+  const success = useSelector((state) => state.user.success);
+  const dispatch = useDispatch();
   const url = useLocation();
   const blogId = url.pathname.split("/")[2];
   const navigate = useNavigate();
@@ -17,7 +24,7 @@ const PostDetail = () => {
   const handleDelete = async () => {
     try {
       await axios
-        .delete(`https://donut-backend-2vcf.onrender.com/api/v1/blogs/delete/${blogId}`, {
+        .delete(`http://localhost:8080/api/v1/blogs/delete/${blogId}`, {
           withCredentials: true,
         })
         .then(() => {
@@ -27,67 +34,77 @@ const PostDetail = () => {
   };
   useEffect(() => {
     const fetchData = async () => {
+      dispatch(loadingState());
       await axios
-        .get(`https://donut-backend-2vcf.onrender.com/api/v1/blogs/${blogId}`)
+        .get(`http://localhost:8080/api/v1/blogs/${blogId}`)
         .then((response) => {
+          dispatch(successState());
           setPost(response.data.data);
         })
-        .catch((error) => {});
+        .catch((error) => {
+          dispatch(failureState());
+        });
     };
     fetchData();
   }, []);
 
   return (
-    <div className="flex-1 my-2 flex justify-center">
-      {post ? (
-        <div className="h-full w-[1240px] bg-white shadow-lg p-6 rounded-lg">
-          <div className="flex justify-between">
-            <div className="flex-1"></div>
-            <h1 className="font-bold text-5xl font-poor-story">{post.title}</h1>
-            <div className="flex-1 flex items-center justify-end gap-5">
-              {user?._id == post.authorId ? (
-                <>
-                  <button className="px-3 py-2  flex items-center gap-2 rounded-md text-white bg-green-300 hover:scale-105 shadow-lg hover:text-[#4e4e4e] transition ease-in-out duration-150">
-                    <FaPen />
-                    Edit
-                  </button>
-                  <button
-                    onClick={handleDelete}
-                    className="px-3 py-2 bg-red-300 text-white flex items-center gap-2 rounded-md hover:scale-105 shadow-lg hover:text-[#4e4e4e] transition ease-in-out duration-150"
-                  >
-                    <FaTrash />
-                    Delete
-                  </button>
-                </>
-              ) : (
-                <></>
-              )}
+    <>
+      {loading && <LoadingScreen />}
+
+      {success && post && (
+        <div className="flex-1 my-2 flex justify-center">
+          <div className="h-full sm:w-[1240px] bg-white shadow-lg p-6 rounded-lg">
+            <div className="flex justify-between">
+              <div className="flex-1"></div>
+              <h1 className="font-bold text-5xl font-poor-story">
+                {post?.title}
+              </h1>
+              <div className="flex-1 flex items-center justify-end gap-5">
+                {user?._id == post.authorId ? (
+                  <>
+                    <button className="px-3 py-2  flex items-center gap-2 rounded-md text-white bg-green-300 hover:scale-105 shadow-lg hover:text-[#4e4e4e] transition ease-in-out duration-150">
+                      <FaPen />
+                      Edit
+                    </button>
+                    <button
+                      onClick={handleDelete}
+                      className="px-3 py-2 bg-red-300 text-white flex items-center gap-2 rounded-md hover:scale-105 shadow-lg hover:text-[#4e4e4e] transition ease-in-out duration-150"
+                    >
+                      <FaTrash />
+                      Delete
+                    </button>
+                  </>
+                ) : (
+                  <></>
+                )}
+              </div>
             </div>
-          </div>
 
-          {/* Image Section */}
-          <div className="h-96 w-full my-6">
-            <div className="w-full h-full rounded-2xl overflow-hidden">
-              <img src={post.imgUrl} className="w-full h-full object-cover" />
+            {/* Image Section */}
+            <div className="sm:h-96 h-52 w-full my-6">
+              <div className="w-full h-full rounded-2xl overflow-hidden">
+                <img src={post?.imgUrl} className="w-full h-full object-cover" />
+              </div>
             </div>
-          </div>
 
-          {/* Author Section */}
-          <PostAuthor
-            id={post.authorId}
-            username={post?.author ? post.author[0].username : ""}
-            authorProfile={post.author ? post.author[0].profilePicUrl : null}
-          />
+            {/* Author Section */}
+            <PostAuthor
+              id={post?.authorId}
+              username={post?.author ? post.author[0].username : ""}
+              authorProfile={post.author ? post.author[0].profilePicUrl : null}
+            />
 
-          {/* Post Section */}
-          <div className="font-normal font-oxygen mt-6 text-lg">
-            {post.content}
+            {/* Post Section */}
+            <article
+              className="font-normal font-oxygen mt-6 text-lg prose prose-slate"
+             
+            >{parse(post?.content)}</article>
           </div>
         </div>
-      ) : (
-        <PostsNotFound />
       )}
-    </div>
+      {failure && <PostsNotFound />}
+    </>
   );
 };
 

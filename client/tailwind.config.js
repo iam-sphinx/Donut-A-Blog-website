@@ -35,5 +35,7 @@ module.exports = {
       Dosis: ["Dosis", "sans-serif"],
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography'),
+  ],
 };

@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation} from "react-router-dom";
 import Banner from "../components/Banner";
 import PostCard from "../components/PostCard";
 import Visitor from "../components/Visitor";
@@ -17,7 +17,7 @@ const UserProfile = () => {
       try {
         await axios
           .get(
-            `https://donut-backend-2vcf.onrender.com/api/v1/user/profile/${id}`,
+            `http://localhost:8080/api/v1/user/profile/${id}`,
             {
               withCredentials: true,
             }
@@ -35,7 +35,7 @@ const UserProfile = () => {
       }
     };
     fetchProfile();
-  }, []);
+  }, [id]);
   return (
     <div className="flex-1 flex">
       {isProfile ? (
@@ -51,7 +51,7 @@ const UserProfile = () => {
             id={profile._id}
           />
           <div className="mt-24">
-            <h1 className="font-bold font-Dosis text-4xl">Posts by User</h1>
+            <h1 className="font-bold font-Dosis text-4xl">Your Posts.</h1>
             <div className="flex justify-center items-center my-6">
               <div className="grid grid-cols-3 gap-6">
                 {profile &&

@@ -8,9 +8,9 @@ const Layout = ({ children }) => {
   return (
     <RouteGuard>
       <div className="min-h-screen flex items-center justify-center ">
-        <div className="w-[1440px] min-h-screen flex flex-col relative justify-between">
+        <div className="sm:w-[1440px] w-[390px] min-h-screen flex flex-col relative justify-between overflow-hidden">
           <Header />
-          <div className="flex-1 flex justify-center">
+          <div className="flex-1 flex">
             <Outlet />
           </div>
           <Footer />
