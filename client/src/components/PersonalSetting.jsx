@@ -20,7 +20,7 @@ const PersonalSetting = () => {
     try {
       axios
         .put(
-          "https://donut-backend-2vcf.onrender.com/api/v1/user/profile/update/credentials",
+          "http://localhost:8080/api/v1/user/profile/update/credentials",
           formData,
           {
             withCredentials: true,

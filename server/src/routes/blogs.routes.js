@@ -11,6 +11,7 @@ import { upload } from "../middlewares/multer.middleware.js";
 
 const router = Router();
 router.route("/:blogId").get(getOneBlog);
+
 router.route("/").get(getBlog);
 router
   .route("/create")

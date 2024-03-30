@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ReactQuill from "react-quill";
 import logo from "../images/logo.png";
 import imgSrc from "../images/upload.jpg";
@@ -6,6 +6,14 @@ import donutImg from "../images/donut.png";
 import "react-quill/dist/quill.snow.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  defaultState,
+  failureState,
+  loadingState,
+  successState,
+} from "../slices/userSlice";
+import FailureCard from "../components/FailureCard";
 
 const CreatePost = () => {
   const [formData, setFormData] = useState({
@@ -19,14 +27,23 @@ const CreatePost = () => {
   const [tempUrl, setTempUrl] = useState(null);
   const [categoryMenu, setCategoryMenu] = useState(false);
   const [category, setCategory] = useState("");
+  const [quillText, setQuillText] = useState("");
+
+  const loading = useSelector((state) => state.user.loading);
+  const failure = useSelector((state) => state.user.failure);
+  const success = useSelector((state) => state.user.success);
+  const dispatch = useDispatch();
 
   const categoryList = [
-    "Tech",
-    "lifeStyle",
+    "Agriculture",
+    "Art",
+    "Entertianment",
+    "Business",
+    "Investment",
     "Education",
-    "Awareness",
-    "News",
-    "Development",
+    "Uncategorized",
+    "Education",
+    "Weather",
   ];
 
   const handleTextChange = async (e) => {
@@ -44,8 +61,9 @@ const CreatePost = () => {
     const postData = { ...formData, coverImage: fileName };
 
     try {
+      dispatch(loadingState());
       const response = await axios.post(
-        "https://donut-backend-2vcf.onrender.com/api/v1/blogs/create/",
+        "http://localhost:8080/api/v1/blogs/create/",
         postData,
         {
           headers: {
@@ -57,13 +75,13 @@ const CreatePost = () => {
 
       if (response.status === 200) {
         setBlogId(response.data.data._id);
-        setSuccessMsg(true);
+        dispatch(successState());
       } else {
-        setSuccessMsg(false);
+        dispatch(failureState());
       }
     } catch (error) {
       console.error("Error creating blog:", error.message);
-      setSuccessMsg(false);
+      dispatch(failureState());
     }
   };
 
@@ -95,9 +113,14 @@ const CreatePost = () => {
       setTempUrl(null);
     }
   };
+
+  useEffect(() => {
+    dispatch(defaultState());
+  }, []);
+
   return (
     <>
-      {successMsg ? (
+      {success && (
         <div className="flex-1 flex items-center justify-center">
           <div className="flex flex-col justify-between items-center gap-2 my-6">
             <div className="h-64">
@@ -126,9 +149,11 @@ const CreatePost = () => {
             </div>
           </div>
         </div>
-      ) : (
+      )}
+
+      {!loading && !failure && !success && (
         <div className="flex-1 flex items-center justify-center my-12">
-          <div className="w-[1200px] h-full flex flex-col ">
+          <div className="sm:w-[1200px] h-full flex flex-col ">
             <div className="flex gap-2 items-center justify-center">
               <span className="font-semibold font-Dosis text-3xl">
                 Create Awsome Blogs And Eat Donuts.
@@ -155,13 +180,15 @@ const CreatePost = () => {
                 <h1 className="text-[#6f6f6f] font-semibold text-xl font-oxygen mb-2">
                   Blog Content
                 </h1>
-                <div className="bg-[#fafafa] rounded-sm border border-[#efefe6] mb-2">
-                  <textarea
-                    type="text"
-                    name="content"
-                    rows={10}
-                    onChange={handleTextChange}
-                    className="h-full w-full overflow-scroll overflow-x-hidden bg-inherit text-ellipsis outline-none p-4 text-[#6f6f6f] resize-none scroll-smooth font-Dosis"
+                <div className="bg-[#fafafa] rounded-sm border border-[#efefe6] mb-12 h-96">
+                  <ReactQuill
+                    className="h-[339px] w-full"
+                    value={quillText}
+                    onChange={(quillText) => {
+                      const newFromData = { ...formData, content: quillText };
+                      setQuillText(quillText);
+                      setFormData(newFromData);
+                    }}
                   />
                 </div>
 
@@ -249,6 +276,7 @@ const CreatePost = () => {
           </div>
         </div>
       )}
+      {failure && <FailureCard />}
     </>
   );
 };

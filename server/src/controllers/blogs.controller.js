@@ -11,7 +11,14 @@ import { uploadOnCloudinary } from "../utils/cloudinaryUpload.js";
 const getBlog = asyncHandler(async (req, res, next) => {
   // fetch data from db
   try {
+    const { category } = req.query;
+
     const response = await Blog.aggregate([
+      {
+        $match: {
+          category: category,
+        },
+      },
       {
         $lookup: {
           from: "users",
@@ -51,17 +58,19 @@ const getBlog = asyncHandler(async (req, res, next) => {
 const createBlog = asyncHandler(async (req, res, next) => {
   try {
     const id = req.userId;
+    const { content, title, category } = req.body;
     const coverImage = req.file;
     console.log(coverImage);
     let coverImageUrl = "";
 
+    if (!content) {
+      throw new ApiError(500, "Content is required");
+    }
     if (coverImage) {
       // try uploading on cloudinary
-      console.log("I am here");
       coverImageUrl = await uploadOnCloudinary(coverImage.path);
     }
 
-    const { content, title, category } = req.body;
     const newBlog = new Blog({
       title,
       content,
@@ -83,7 +92,9 @@ const createBlog = asyncHandler(async (req, res, next) => {
       .status(200)
       .json(apiResponse(200, "Successfully created blog", response));
   } catch (error) {
-    return res.status(error.status).json({ error: error.message || "JWT ERROR" });
+    return res
+      .status(error.status)
+      .json({ error: error.message || "JWT ERROR" });
   }
 });
 

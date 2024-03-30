@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import PostAuthor from "./PostAuthor";
 import { getMonthName } from "../utils/getMonthName";
 import { memo } from "react";
+import parse from "html-react-parser";
 
 const PostCard = ({
   id,
@@ -16,15 +17,14 @@ const PostCard = ({
   authorName,
   authorProfile,
 }) => {
-  const shortContent =
-    content?.length < 60 ? content : content?.substr(0, 60) + " • • •";
+  const parsedContent = parse(content);
   const shortTitle =
     title?.length < 25 ? title : title?.substr(0, 25) + " • • •";
   const date = createdAt?.split("-");
 
   return (
     <Link to={`/posts/${id}`}>
-      <div className="h-96 w-96  rounded-3xl flex flex-col m-2 overflow-hidden shadow-lg cursor-pointer">
+      <div className="sm:h-96 sm:w-96 h-72 w-72  rounded-3xl flex flex-col m-2 overflow-hidden shadow-lg cursor-pointer">
         <div className="flex-1 overflow-hidden bg-white relative shadow-inner">
           <img src={thumbnail} className="h-full w-full object-cover" />
           <div className="absolute h-14 w-12 bg-white top-0 left-12 shadow-lg">
@@ -43,8 +43,8 @@ const PostCard = ({
                 {shortTitle}
               </h1>
             </Link>
-            <p className="flex-1 text-[#9c9c9c] text-md font-oxygen">
-              {shortContent}
+            <p className="flex-1 text-[#9c9c9c] text-md font-oxygen line-clamp-3">
+              {parsedContent}
             </p>
             <div className="flex justify-between items-center">
               <PostAuthor

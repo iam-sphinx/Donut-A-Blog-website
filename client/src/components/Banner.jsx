@@ -13,7 +13,7 @@ const Banner = ({
 }) => {
   return (
     <div className="h-64 relative">
-      <h1 className="absolute text-white font-Dosis text-3xl left-[50%] translate-x-[-50%] z-10">{`❝${quote}❞`}</h1>
+      <h1 className="absolute text-white font-Dosis text-3xl left-[50%] translate-x-[-50%] z-10 text-center">{`❝${quote}❞`}</h1>
       <div className="h-full relative">
         <img
           src={coverPicUrl}

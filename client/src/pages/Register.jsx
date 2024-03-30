@@ -49,7 +49,7 @@ const Register = () => {
     }
 
     await axios
-      .post("https://donut-backend-2vcf.onrender.com/api/v1/user/register", formData)
+      .post("http://localhost:8080/api/v1/user/register", formData)
       .then((response) => {
         if (response.status === 200) {
           navigate("/login");

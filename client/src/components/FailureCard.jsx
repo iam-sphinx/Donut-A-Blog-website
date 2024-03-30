@@ -1,10 +1,17 @@
 import React from "react";
 import cross from "../images/cross.png";
 import failed from "../images/failed.png";
+import { useDispatch } from "react-redux";
+import { defaultState } from "../slices/userSlice";
 
-const FailureCard = ({ handleClose }) => {
+const FailureCard = () => {
+  const dispatch = useDispatch();
+  const handleClose = () => {
+    dispatch(defaultState());
+  };
+
   return (
-    <div className="mt-64 h-72 rounded-lg p-6 w-[500px] relative bg-white">
+    <div className=" h-72 rounded-lg p-6 w-[500px] relative bg-white shadow-2xl">
       <img
         src={cross}
         alt=""
