@@ -17,7 +17,7 @@ const UserProfile = () => {
     const fetchProfile = async () => {
       try {
         await axios
-          .get(`http://localhost:8080/api/v1/user/profile/${id}`, {
+          .get(`https://donut-a-blog-website.onrender.com/api/v1/user/profile/${id}`, {
             withCredentials: true,
           })
           .then((response) => {

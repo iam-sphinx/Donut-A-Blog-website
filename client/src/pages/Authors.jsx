@@ -18,7 +18,7 @@ const Authors = () => {
       try {
         dispatch(loadingState());
         const response = await axios.get(
-          "http://localhost:8080/api/v1/author/"
+          "https://donut-a-blog-website.onrender.com/api/v1/author/"
         );
         if (response.status === 200) {
           dispatch(successState());

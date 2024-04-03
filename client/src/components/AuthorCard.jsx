@@ -9,7 +9,7 @@ const AuthorCard = ({ title, quote, imgUrl, bgUrl, followers, posts, id }) => {
   const handleFollow = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/v1/author/follow/${id}`,
+        `https://donut-a-blog-website.onrender.com/api/v1/author/follow/${id}`,
         { withCredentials: true }
       );
       if (response.status === 200) {

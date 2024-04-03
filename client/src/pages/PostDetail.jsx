@@ -24,7 +24,7 @@ const PostDetail = () => {
   const handleDelete = async () => {
     try {
       await axios
-        .delete(`http://localhost:8080/api/v1/blogs/delete/${blogId}`, {
+        .delete(`https://donut-a-blog-website.onrender.com/api/v1/blogs/delete/${blogId}`, {
           withCredentials: true,
         })
         .then(() => {
@@ -36,7 +36,7 @@ const PostDetail = () => {
     const fetchData = async () => {
       dispatch(loadingState());
       await axios
-        .get(`http://localhost:8080/api/v1/blogs/${blogId}`)
+        .get(`https://donut-a-blog-website.onrender.com/api/v1/blogs/${blogId}`)
         .then((response) => {
           dispatch(successState());
           setPost(response.data.data);
