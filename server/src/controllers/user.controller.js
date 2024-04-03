@@ -73,19 +73,16 @@ const loginUser = asyncHandler(async (req, res, next) => {
     const token = jwt.sign({ id: user._id }, process.env.JWT_KEY, {
       expiresIn: "1h",
     });
-    const options = {
-      httpOnly: true,
-      secure: false,
-    };
-
+  
     const filterUser = { ...user._doc, password: "" };
 
     res
       .status(200)
-      .cookie("access_token", token, options)
+      .cookie("token", token)
       .json(
         apiResponse(200, "user logged in successfully", {
           ...filterUser,
+          access_token: token,
         })
       );
   } catch (error) {
