@@ -3,6 +3,7 @@ import { ApiError } from "../utils/ApiError.js";
 export const verifyJWT = async (req, res, next) => {
   try {
     const token = req.cookies.access_token;
+    res.send(`${token} hello`);
 
     if (!token) {
       throw new ApiError(401, "unauthorized request here i am");
