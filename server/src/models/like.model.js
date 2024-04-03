@@ -1,17 +1,17 @@
 import { Schema, model } from "mongoose";
 
-const followerSchema = new Schema(
+const LikeSchema = new Schema(
   {
-    followTo: {
+    likedBy: {
       type: Schema.Types.ObjectId,
       ref: "User",
     },
-    followBy: {
+    likedTo: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Blog",
     },
   },
   { timestamps: true }
 );
 
-export const Follower = model("Follower", followerSchema);
+export const Like = model("like", LikeSchema);

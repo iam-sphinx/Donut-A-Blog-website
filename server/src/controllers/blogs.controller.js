@@ -4,6 +4,7 @@ import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/AsyncHandler.js";
 import { apiResponse } from "../utils/apiResponse.js";
 import { uploadOnCloudinary } from "../utils/cloudinaryUpload.js";
+import { v2 as cloudinary } from "cloudinary";
 
 // fetch blog data
 // unprotected
@@ -47,7 +48,6 @@ const getBlog = asyncHandler(async (req, res, next) => {
 
     res.status(200).json(apiResponse(200, "Success", response));
   } catch (error) {
-    console.log(error);
     return res.status(400, error);
   }
 });
@@ -60,7 +60,7 @@ const createBlog = asyncHandler(async (req, res, next) => {
     const id = req.userId;
     const { content, title, category } = req.body;
     const coverImage = req.file;
-    console.log(coverImage);
+
     let coverImageUrl = "";
 
     if (!content) {
@@ -105,6 +105,8 @@ const updateBlog = asyncHandler(async (req, res, next) => {
   try {
     const { blogId } = req.params;
     const userId = req.userId;
+    let coverImageUrl = null;
+    const coverImage = req.file;
 
     const blog = await Blog.findById(blogId);
 
@@ -118,11 +120,23 @@ const updateBlog = asyncHandler(async (req, res, next) => {
       throw new ApiError(401, "Only author can update the blog");
     }
 
-    const { content, title } = req.body;
+    if (coverImage) {
+      const publicId = blog.imgUrl.split("/").pop().split(".")[0];
+      // first delete saved file in cloudinary
+      cloudinary.uploader
+        .destroy(publicId, { resource_type: "image" })
+        .then((res) => console.log(res));
 
-    const response = await Blog.findByIdAndUpdate(blogId, {
-      $set: { title, content },
-    });
+      // try uploading on cloudinary
+      coverImageUrl = await uploadOnCloudinary(coverImage.path);
+    }
+    const response = await Blog.findByIdAndUpdate(
+      blogId,
+      {
+        $set: { ...req.body, imgUrl: coverImageUrl ?? blog.imgUrl },
+      },
+      { new: true }
+    );
 
     if (!response) {
       throw new ApiError(
@@ -135,7 +149,6 @@ const updateBlog = asyncHandler(async (req, res, next) => {
       .status(200)
       .json(apiResponse(200, "successfully updated blog", response));
   } catch (error) {
-    console.log("inside update route", error);
     return res.status(400).json(error);
   }
 });
@@ -156,7 +169,6 @@ const deleteBlog = asyncHandler(async (req, res, next) => {
     await Blog.findByIdAndDelete(blogId);
     return res.status(200).json(apiResponse(200, "Successfully deleted blog"));
   } catch (error) {
-    console.log("error occured in delete route", error);
     return res.status(400).json(error);
   }
 });
@@ -196,4 +208,8 @@ const getOneBlog = asyncHandler(async (req, res, next) => {
   }
 });
 
-export { getBlog, createBlog, updateBlog, deleteBlog, getOneBlog };
+// protected route
+// like/:blogId
+const likeBlog = asyncHandler(async (req, res) => {});
+
+export { getBlog, createBlog, updateBlog, deleteBlog, getOneBlog, likeBlog };

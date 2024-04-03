@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { FaPen } from "react-icons/fa6";
 import { FaTrash } from "react-icons/fa6";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import PostAuthor from "../components/PostAuthor";
 import axios from "axios";
 import PostsNotFound from "./PostsNotFound";
 import { useDispatch, useSelector } from "react-redux";
 import { failureState, loadingState, successState } from "../slices/userSlice";
 import LoadingScreen from "../components/LoadingScreen";
-import parse from 'html-react-parser';
+import parse from "html-react-parser";
 
 const PostDetail = () => {
   const user = useSelector((state) => state.user.user);
@@ -63,10 +63,13 @@ const PostDetail = () => {
               <div className="flex-1 flex items-center justify-end gap-5">
                 {user?._id == post.authorId ? (
                   <>
-                    <button className="px-3 py-2  flex items-center gap-2 rounded-md text-white bg-green-300 hover:scale-105 shadow-lg hover:text-[#4e4e4e] transition ease-in-out duration-150">
+                    <Link
+                      className="px-3 py-2  flex items-center gap-2 rounded-md text-white bg-green-300 hover:scale-105 shadow-lg hover:text-[#4e4e4e] transition ease-in-out duration-150"
+                      to={`/post/edit/${blogId}`}
+                    >
                       <FaPen />
                       Edit
-                    </button>
+                    </Link>
                     <button
                       onClick={handleDelete}
                       className="px-3 py-2 bg-red-300 text-white flex items-center gap-2 rounded-md hover:scale-105 shadow-lg hover:text-[#4e4e4e] transition ease-in-out duration-150"
@@ -84,7 +87,10 @@ const PostDetail = () => {
             {/* Image Section */}
             <div className="sm:h-96 h-52 w-full my-6">
               <div className="w-full h-full rounded-2xl overflow-hidden">
-                <img src={post?.imgUrl} className="w-full h-full object-cover" />
+                <img
+                  src={post?.imgUrl}
+                  className="w-full h-full object-cover"
+                />
               </div>
             </div>
 
@@ -96,10 +102,9 @@ const PostDetail = () => {
             />
 
             {/* Post Section */}
-            <article
-              className="font-normal font-oxygen mt-6 text-lg prose prose-slate"
-             
-            >{parse(post?.content)}</article>
+            <article className="font-normal font-oxygen mt-6 text-lg prose prose-slate">
+              {parse(post?.content)}
+            </article>
           </div>
         </div>
       )}

@@ -74,7 +74,6 @@ const AccountSetting = () => {
           setSuccess(1);
         })
         .catch((error) => {
-  
           setSuccess(2);
         });
 
@@ -113,7 +112,13 @@ const AccountSetting = () => {
           {/* Cover Profile */}
           <div className="h-72 rounded-xl overflow-hidden relative bg-green-200">
             <img
-              src={tempImages.cover ?? user?.coverPicUrl ?? background}
+              src={
+                tempImages.cover
+                  ? tempImages.cover
+                  : user?.coverPicUrl
+                  ? user?.coverPicUrl
+                  : background
+              }
               alt="not found"
               className="h-full w-full object-cover"
             />
@@ -146,7 +151,13 @@ const AccountSetting = () => {
           </h1>
           <div className="h-44 w-44 rounded-full border-4 overflow-hidden relative mb-2">
             <img
-              src={tempImages.profile ?? user?.profilePicUrl ?? profilePic}
+              src={
+                tempImages.profile
+                  ? tempImages.profile
+                  : user?.profilePicUrl
+                  ? user?.profilePicUrl
+                  : profilePic
+              }
               alt="not found"
               className="h-full w-full object-cover"
             />

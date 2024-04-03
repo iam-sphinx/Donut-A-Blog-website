@@ -1,9 +1,10 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useLocation} from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import Banner from "../components/Banner";
 import PostCard from "../components/PostCard";
 import Visitor from "../components/Visitor";
+import BioCard from "../components/BioCard";
 
 const UserProfile = () => {
   const [profile, setProfile] = useState({});
@@ -16,12 +17,9 @@ const UserProfile = () => {
     const fetchProfile = async () => {
       try {
         await axios
-          .get(
-            `http://localhost:8080/api/v1/user/profile/${id}`,
-            {
-              withCredentials: true,
-            }
-          )
+          .get(`http://localhost:8080/api/v1/user/profile/${id}`, {
+            withCredentials: true,
+          })
           .then((response) => {
             if (response.status === 200) {
               setProfile(response.data.data);
@@ -51,25 +49,35 @@ const UserProfile = () => {
             id={profile._id}
           />
           <div className="mt-24">
-            <h1 className="font-bold font-Dosis text-4xl">Your Posts.</h1>
-            <div className="flex justify-center items-center my-6">
-              <div className="grid grid-cols-3 gap-6">
-                {profile &&
-                  profile.blogs &&
-                  profile.blogs.map((item, idx) => {
-                    return (
-                      <PostCard
-                        key={idx}
-                        authorId={item.authorId}
-                        category={item.category}
-                        content={item.content}
-                        id={item._id}
-                        thumbnail={item.imgUrl}
-                        title={item.title}
-                        createdAt={item.createdAt.slice(0, 10)}
-                      />
-                    );
-                  })}
+            <div className="flex justify-between gap-6 my-6">
+              <div className="flex-1 flex justify-center">
+                <div>
+                  <BioCard bio={profile.bio} />
+                </div>
+              </div>
+              <div>
+                <h1 className="font-bold font-Dosis text-4xl">Your Posts.</h1>
+                <div className="grid grid-cols-2 gap-6">
+                  {profile &&
+                    profile.blogs &&
+                    profile.blogs.map((item, idx) => {
+                      console.log(item);
+                      return (
+                        <PostCard
+                          key={idx}
+                          authorId={item.authorId}
+                          category={item.category}
+                          content={item.content}
+                          id={item._id}
+                          thumbnail={item.imgUrl}
+                          authorName={profile.username}
+                          authorProfile={profile.profilePicUrl}
+                          title={item.title}
+                          createdAt={item.createdAt.slice(0, 10)}
+                        />
+                      );
+                    })}
+                </div>
               </div>
             </div>
           </div>

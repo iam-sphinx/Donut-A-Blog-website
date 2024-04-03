@@ -37,9 +37,9 @@ const Authors = () => {
   return (
     <>
       {loading && <LoadingScreen />}
-      <div className="flex justify-center items-center">
+      <div className="flex justify-center items-center flex-1">
         {authors.length > 0 && success && (
-          <div className="grid grid-cols-2 gap-6 my-6">
+          <div className="grid grid-cols-2 gap-12 my-12">
             {authors.map((item, index) => {
               return (
                 <AuthorCard
