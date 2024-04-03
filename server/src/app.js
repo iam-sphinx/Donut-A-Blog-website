@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("./public"));
 app.use(
   cors({
-    origin: "https://donut-a-blog-website.vercel.app/",
+    origin: "https://donut-a-blog-website.vercel.app",
     credentials: true,
   })
 );
