@@ -13,6 +13,7 @@ import {
 // register controller
 // unprotected
 // /api/v1/user/register
+
 const registerUser = asyncHandler(async (req, res, next) => {
   try {
     const { username, email, password } = req.body;

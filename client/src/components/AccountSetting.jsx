@@ -62,7 +62,7 @@ const AccountSetting = () => {
 
   const uploadProfileData = async () => {
     try {
-      const token = uset.access_token;
+      const token = user.access_token;
       await axios
         .put("https://donut-a-blog-website.onrender.com/api/v1/user/profile/update", formData, {
           headers: {
