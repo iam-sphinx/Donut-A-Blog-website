@@ -7,13 +7,13 @@ const CategoryPostSection = ({ category }) => {
   useEffect(() => {
     const fetchData = async () => {
       const response = await axios.get(
-        `https://donut-a-blog-website.onrender.com/api/v1/blogs/?category=${category}`
+        `http://localhost:8080/api/v1/blogs/?category=${category}`
       );
       setCategoryPosts(response.data.data);
     };
     fetchData();
-  }, []);
-  if (categoryPost.length == 0) {
+  }, [category]);
+  if (categoryPost.length === 0) {
     return <></>;
   }
 

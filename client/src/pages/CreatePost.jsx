@@ -21,7 +21,6 @@ const CreatePost = () => {
     content: "",
     category: "",
   });
-  const [successMsg, setSuccessMsg] = useState(false);
   const [blogId, setBlogId] = useState("");
   const [fileName, setFileName] = useState({});
   const [tempUrl, setTempUrl] = useState(null);
@@ -32,6 +31,7 @@ const CreatePost = () => {
   const loading = useSelector((state) => state.user.loading);
   const failure = useSelector((state) => state.user.failure);
   const success = useSelector((state) => state.user.success);
+  const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
 
   const categoryList = [
@@ -57,17 +57,19 @@ const CreatePost = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    const token = user.access_token;
+    console.log(token);
     const postData = { ...formData, coverImage: fileName };
 
     try {
       dispatch(loadingState());
       const response = await axios.post(
-        "https://donut-a-blog-website.onrender.com/api/v1/blogs/create/",
+        "http://localhost:8080/api/v1/blogs/create/",
         postData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: "Bearer " + token,
           },
           withCredentials: true,
         }
@@ -116,7 +118,7 @@ const CreatePost = () => {
 
   useEffect(() => {
     dispatch(defaultState());
-  }, []);
+  }, [dispatch]);
 
   return (
     <>

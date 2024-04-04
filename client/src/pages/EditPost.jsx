@@ -3,9 +3,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import logo from "../images/logo.png";
 import imgSrc from "../images/upload.jpg";
-import donutImg from "../images/donut.png";
 import ReactQuill from "react-quill";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const EditPost = () => {
   const navigate = useNavigate();
@@ -20,6 +20,7 @@ const EditPost = () => {
   const [categoryMenu, setCategoryMenu] = useState(false);
   const [category, setCategory] = useState("");
   const [quillText, setQuillText] = useState("");
+  const user = useSelector((state)=>state.user.user);
 
   const categoryList = [
     "Agriculture",
@@ -44,11 +45,10 @@ const EditPost = () => {
   const url = useLocation().pathname;
   const blogId = url.split("/")[3];
 
-  const [preData, setPreData] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       const response = await axios.get(
-        `https://donut-a-blog-website.onrender.com/api/v1/blogs/${blogId}`
+        `http://localhost:8080/api/v1/blogs/${blogId}`
       );
       setFormData({
         category: response?.data?.data?.category,
@@ -60,7 +60,7 @@ const EditPost = () => {
       setTempUrl(response?.data?.data?.imgUrl);
     };
     fetchData();
-  }, []);
+  }, [blogId]);
 
   const handleInputImage = () => {
     selectImg.current.click();
@@ -71,17 +71,18 @@ const EditPost = () => {
     const postData = { ...formData, coverImage: fileName };
     console.log(postData);
     try {
+      const token = user.access_token;
       const response = await axios.put(
-        `https://donut-a-blog-website.onrender.com/api/v1/blogs/update/${blogId}`,
+        `http://localhost:8080/api/v1/blogs/update/${blogId}`,
         postData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: "Bearer " + token,
           },
-          withCredentials: true,
         }
       );
-      if (response.status == "200") {
+      if (response.status === "200") {
         navigate("/");
       }
     } catch (error) {

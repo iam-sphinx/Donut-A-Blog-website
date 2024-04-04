@@ -1,16 +1,23 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 const AuthorCard = ({ title, quote, imgUrl, bgUrl, followers, posts, id }) => {
   quote = quote?.length >= 150 ? quote?.slice(0, 150) + "..." : quote;
-  const [isFollowed, setIsFollowed] = useState(false);
-  
+  const [, setIsFollowed] = useState(false);
+  const user = useSelector((state) => state.user.user);
+
   const handleFollow = async () => {
     try {
+      const token = user.access_token;
       const response = await axios.get(
-        `https://donut-a-blog-website.onrender.com/api/v1/author/follow/${id}`,
-        { withCredentials: true }
+        `http://localhost:8080/api/v1/author/follow/${id}`,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
       );
       if (response.status === 200) {
         setIsFollowed(true);

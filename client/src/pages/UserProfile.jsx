@@ -5,10 +5,12 @@ import Banner from "../components/Banner";
 import PostCard from "../components/PostCard";
 import Visitor from "../components/Visitor";
 import BioCard from "../components/BioCard";
+import { useSelector } from "react-redux";
 
 const UserProfile = () => {
   const [profile, setProfile] = useState({});
   const [isProfile, setIsProfile] = useState(false);
+  const user = useSelector((state) => state.user.user);
   const url = useLocation();
   const id = url.pathname.split("/")[3];
   console.log(id);
@@ -16,9 +18,12 @@ const UserProfile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
+        const token = user.access_token;
         await axios
-          .get(`https://donut-a-blog-website.onrender.com/api/v1/user/profile/${id}`, {
-            withCredentials: true,
+          .get(`http://localhost:8080/api/v1/user/profile/${id}`, {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
           })
           .then((response) => {
             if (response.status === 200) {
@@ -33,7 +38,7 @@ const UserProfile = () => {
       }
     };
     fetchProfile();
-  }, [id]);
+  }, [id, user.access_token]);
   return (
     <div className="flex-1 flex">
       {isProfile ? (

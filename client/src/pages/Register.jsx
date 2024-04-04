@@ -6,8 +6,6 @@ import { Link } from "react-router-dom";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { login } from "../slices/userSlice";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -49,7 +47,7 @@ const Register = () => {
     }
 
     await axios
-      .post("https://donut-a-blog-website.onrender.com/api/v1/user/register", formData)
+      .post("http://localhost:8080/api/v1/user/register", formData)
       .then((response) => {
         if (response.status === 200) {
           navigate("/login");

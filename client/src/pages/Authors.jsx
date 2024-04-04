@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import AuthorCard from "../components/AuthorCard";
-import { Link } from "react-router-dom";
 import PostsNotFound from "./PostsNotFound";
 import axios from "axios";
 import LoadingScreen from "../components/LoadingScreen";
@@ -18,7 +17,7 @@ const Authors = () => {
       try {
         dispatch(loadingState());
         const response = await axios.get(
-          "https://donut-a-blog-website.onrender.com/api/v1/author/"
+          "http://localhost:8080/api/v1/author/"
         );
         if (response.status === 200) {
           dispatch(successState());
@@ -33,7 +32,7 @@ const Authors = () => {
     };
 
     fetchData();
-  }, []);
+  }, [dispatch]);
   return (
     <>
       {loading && <LoadingScreen />}

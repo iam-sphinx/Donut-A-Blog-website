@@ -6,13 +6,14 @@ import axios from "axios";
 
 const AuthorProfile = () => {
   const [posts, setPosts] = useState([]);
+
   const url = useLocation();
   const id = url.pathname.split("/")[2];
 
   useEffect(() => {
     const fetchData = async () => {
       await axios
-        .get(`https://donut-a-blog-website.onrender.com/api/v1/author/${id}`)
+        .get(`http://localhost:8080/api/v1/author/${id}`)
         .then((response) => {
           if (response.status === 200) {
             setPosts(response.data.data[0]);
@@ -23,7 +24,7 @@ const AuthorProfile = () => {
         });
     };
     fetchData();
-  }, []);
+  }, [id]);
   return (
     <>
       {posts ? (
@@ -49,7 +50,7 @@ const AuthorProfile = () => {
         </div>
       ) : (
         <div className="h-72 flex flex-col justify-between items-center gap-4 my-6">
-          <img src={notFoundImg} className="h-full object-cover" />
+          <img src={notFoundImg} className="h-full object-cover" alt="" />
           <h1 className="font-poor-story text-4xl">Oops! No Post Found.</h1>
         </div>
       )}

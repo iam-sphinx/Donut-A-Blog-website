@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import FailureCard from "./FailureCard";
 import SuccessCard from "./SuccessCard";
@@ -10,6 +10,7 @@ const PersonalSetting = () => {
     password: "",
     email: "",
   });
+  const user = useSelector((state) => state.user.user);
 
   const handleTextChange = (e) => {
     const { name, value } = e.target;
@@ -18,12 +19,15 @@ const PersonalSetting = () => {
 
   const updateProfileCredentials = async () => {
     try {
-      axios
+      const token = user.access_token;
+      await axios
         .put(
-          "https://donut-a-blog-website.onrender.com/api/v1/user/profile/update/credentials",
+          "http://localhost:8080/api/v1/user/profile/update/credentials",
           formData,
           {
-            withCredentials: true,
+            headers: {
+              Authorization: "Bearer " + token,
+            },
           }
         )
         .then((response) => {

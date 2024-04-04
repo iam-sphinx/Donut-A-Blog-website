@@ -23,9 +23,12 @@ const PostDetail = () => {
 
   const handleDelete = async () => {
     try {
+      const token = user.access_token;
       await axios
-        .delete(`https://donut-a-blog-website.onrender.com/api/v1/blogs/delete/${blogId}`, {
-          withCredentials: true,
+        .delete(`http://localhost:8080/api/v1/blogs/delete/${blogId}`, {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
         })
         .then(() => {
           navigate("/");
@@ -36,7 +39,7 @@ const PostDetail = () => {
     const fetchData = async () => {
       dispatch(loadingState());
       await axios
-        .get(`https://donut-a-blog-website.onrender.com/api/v1/blogs/${blogId}`)
+        .get(`http://localhost:8080/api/v1/blogs/${blogId}`)
         .then((response) => {
           dispatch(successState());
           setPost(response.data.data);
@@ -46,7 +49,7 @@ const PostDetail = () => {
         });
     };
     fetchData();
-  }, []);
+  }, [blogId, dispatch]);
 
   return (
     <>
@@ -61,7 +64,7 @@ const PostDetail = () => {
                 {post?.title}
               </h1>
               <div className="flex-1 flex items-center justify-end gap-5">
-                {user?._id == post.authorId ? (
+                {user?._id === post.authorId ? (
                   <>
                     <Link
                       className="px-3 py-2  flex items-center gap-2 rounded-md text-white bg-green-300 hover:scale-105 shadow-lg hover:text-[#4e4e4e] transition ease-in-out duration-150"
@@ -90,6 +93,7 @@ const PostDetail = () => {
                 <img
                   src={post?.imgUrl}
                   className="w-full h-full object-cover"
+                  alt=""
                 />
               </div>
             </div>
