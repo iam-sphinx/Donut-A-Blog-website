@@ -64,7 +64,7 @@ const CreatePost = () => {
     try {
       dispatch(loadingState());
       const response = await axios.post(
-        "http://localhost:8080/api/v1/blogs/create/",
+        "https://donut-a-blog-website.onrender.com/api/v1/blogs/create/",
         postData,
         {
           headers: {
