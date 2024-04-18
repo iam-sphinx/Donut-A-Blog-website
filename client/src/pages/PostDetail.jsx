@@ -25,7 +25,7 @@ const PostDetail = () => {
     try {
       const token = user.access_token;
       await axios
-        .delete(`http://localhost:8080/api/v1/blogs/delete/${blogId}`, {
+        .delete(`https://donut-a-blog-website.onrender.com/api/v1/blogs/delete/${blogId}`, {
           headers: {
             Authorization: "Bearer " + token,
           },
@@ -39,7 +39,7 @@ const PostDetail = () => {
     const fetchData = async () => {
       dispatch(loadingState());
       await axios
-        .get(`http://localhost:8080/api/v1/blogs/${blogId}`)
+        .get(`https://donut-a-blog-website.onrender.com/api/v1/blogs/${blogId}`)
         .then((response) => {
           dispatch(successState());
           setPost(response.data.data);

@@ -10,7 +10,7 @@ const FollowBtn = ({ authorId }) => {
     try {
       const token = user.access_token;
       const response = await axios.get(
-        `http://localhost:8080/api/v1/author/follow/${authorId}`,
+        `https://donut-a-blog-website.onrender.com/api/v1/author/follow/${authorId}`,
         {
           headers: {
             Authorization: "Bearer " + token,
@@ -32,7 +32,7 @@ const FollowBtn = ({ authorId }) => {
       try {
         const token = user.access_token;
         await axios
-          .get(`http://localhost:8080api/v1/author/follow/check/${authorId}`, {
+          .get(`https://donut-a-blog-website.onrender.comapi/v1/author/follow/check/${authorId}`, {
             headers: {
               Authorization: "Bearer " + token,
             },

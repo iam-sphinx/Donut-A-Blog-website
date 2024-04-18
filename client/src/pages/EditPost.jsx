@@ -48,7 +48,7 @@ const EditPost = () => {
   useEffect(() => {
     const fetchData = async () => {
       const response = await axios.get(
-        `http://localhost:8080/api/v1/blogs/${blogId}`
+        `https://donut-a-blog-website.onrender.com/api/v1/blogs/${blogId}`
       );
       setFormData({
         category: response?.data?.data?.category,
@@ -73,7 +73,7 @@ const EditPost = () => {
     try {
       const token = user.access_token;
       const response = await axios.put(
-        `http://localhost:8080/api/v1/blogs/update/${blogId}`,
+        `https://donut-a-blog-website.onrender.com/api/v1/blogs/update/${blogId}`,
         postData,
         {
           headers: {
