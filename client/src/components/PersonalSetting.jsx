@@ -22,7 +22,7 @@ const PersonalSetting = () => {
       const token = user.access_token;
       await axios
         .put(
-          "https://donut-a-blog-website.onrender.com/api/v1/user/profile/update/credentials",
+          "http://localhost:8080/api/v1/user/profile/update/credentials",
           formData,
           {
             headers: {

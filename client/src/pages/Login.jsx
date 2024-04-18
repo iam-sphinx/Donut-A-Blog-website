@@ -54,7 +54,7 @@ const Login = () => {
       withCredentials: true,
     };
     await axios
-      .post("https://donut-a-blog-website.onrender.com/api/v1/user/login", formData, config)
+      .post("http://localhost:8080/api/v1/user/login", formData, config)
       .then((response) => {
         if (response.status === 200) {
           console.log(response.data.data);

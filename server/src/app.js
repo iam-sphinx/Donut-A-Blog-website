@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("./public"));
 app.use(
   cors({
-    origin: "https://donut-z7s1.onrender.com",
+    origin: ["http://localhost:3000"],
     credentials: true,
   })
 );
