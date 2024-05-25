@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("./public"));
 app.use(
   cors({
-    origin: "https://donut-jet.vercel.app",
+    origin: ["http://localhost:3000", "donut-jet.vercel.app/"],
     credentials: true,
   })
 );

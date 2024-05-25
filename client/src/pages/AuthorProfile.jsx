@@ -13,7 +13,7 @@ const AuthorProfile = () => {
   useEffect(() => {
     const fetchData = async () => {
       await axios
-        .get(`https://donut-a-blog-website.onrender.com/api/v1/author/${id}`)
+        .get(`${process.env.REACT_APP_SERVER_BASE_URL}/api/v1/author/${id}`)
         .then((response) => {
           if (response.status === 200) {
             setPosts(response.data.data[0]);

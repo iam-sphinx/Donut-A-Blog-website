@@ -64,7 +64,7 @@ const AccountSetting = () => {
     try {
       const token = user.access_token;
       await axios
-        .put("https://donut-a-blog-website.onrender.com/api/v1/user/profile/update", formData, {
+        .put(`${process.env.REACT_APP_SERVER_BASE_URL}/api/v1/user/profile/update`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
             "Authorization": "Bearer " + token,

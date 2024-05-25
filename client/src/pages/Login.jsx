@@ -6,7 +6,7 @@ import axios from "axios";
 
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
-import { useDispatch} from "react-redux";
+import { useDispatch } from "react-redux";
 import { getUser } from "../slices/userSlice";
 
 const Login = () => {
@@ -54,7 +54,11 @@ const Login = () => {
       withCredentials: true,
     };
     await axios
-      .post("https://donut-a-blog-website.onrender.com/api/v1/user/login", formData, config)
+      .post(
+        `${process.env.REACT_APP_SERVER_BASE_URL}/api/v1/user/login`,
+        formData,
+        config
+      )
       .then((response) => {
         if (response.status === 200) {
           console.log(response.data.data);

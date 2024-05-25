@@ -12,7 +12,7 @@ const AuthorCard = ({ title, quote, imgUrl, bgUrl, followers, posts, id }) => {
     try {
       const token = user.access_token;
       const response = await axios.get(
-        `https://donut-a-blog-website.onrender.com/api/v1/author/follow/${id}`,
+        `${process.env.REACT_APP_SERVER_BASE_URL}api/v1/author/follow/${id}`,
         {
           headers: {
             Authorization: "Bearer " + token,

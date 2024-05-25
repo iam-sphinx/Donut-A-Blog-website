@@ -47,7 +47,7 @@ const Register = () => {
     }
 
     await axios
-      .post("https://donut-a-blog-website.onrender.com/api/v1/user/register", formData)
+      .post(`${process.env.REACT_APP_SERVER_BASE_URL}/api/v1/user/register`, formData)
       .then((response) => {
         if (response.status === 200) {
           navigate("/login");

@@ -7,7 +7,7 @@ const CategoryPostSection = ({ category }) => {
   useEffect(() => {
     const fetchData = async () => {
       const response = await axios.get(
-        `https://donut-a-blog-website.onrender.com/api/v1/blogs/?category=${category}`
+        `${process.env.REACT_APP_SERVER_BASE_URL}/api/v1/blogs/?category=${category}`
       );
       setCategoryPosts(response.data.data);
     };

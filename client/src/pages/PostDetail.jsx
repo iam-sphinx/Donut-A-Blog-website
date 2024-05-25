@@ -25,7 +25,7 @@ const PostDetail = () => {
     try {
       const token = user.access_token;
       await axios
-        .delete(`https://donut-a-blog-website.onrender.com/api/v1/blogs/delete/${blogId}`, {
+        .delete(`${process.env.REACT_APP_SERVER_BASE_URL}/api/v1/blogs/delete/${blogId}`, {
           headers: {
             Authorization: "Bearer " + token,
           },
@@ -39,7 +39,7 @@ const PostDetail = () => {
     const fetchData = async () => {
       dispatch(loadingState());
       await axios
-        .get(`https://donut-a-blog-website.onrender.com/api/v1/blogs/${blogId}`)
+        .get(`${process.env.REACT_APP_SERVER_BASE_URL}/api/v1/blogs/${blogId}`)
         .then((response) => {
           dispatch(successState());
           setPost(response.data.data);
